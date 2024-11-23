@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Backups</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <h1>Controle de Backups</h1>
+    <form id="data-form">
+        <label for="serial">ESN:</label>
+        <input type="text" id="serial" name="serial" required onblur="checkDuplicateSerial()">
+        <div id="duplicate-warning" style="display: none; color: red;">ESN já registrado! Deseja removê-lo? <button onclick="removeSerialPrompt()">Sim</button></div>
+        <label for="model">Modelo:</label>
+        <input type="text" id="model" name="model" required>
+        <label for="date">Data (dd/mm/aaaa):</label>
+        <input type="date" id="date" name="date" required>
+        <label for="currie">Nome Courier:</label>
+        <input type="text" id="currie" name="currie" required>
+        <div class="buttons">
+            <button type="submit">Adicionar</button>
+            <input type="file" id="import-file" style="display:none;">
+            <button type="button" id="import-btn">Importar Excel</button>
+        </div>
+    </form>
+
+    <h2>Dados Registrados</h2>
+    <input type="text" id="search-box" placeholder="Procurar ESN" onkeyup="searchSerial()">
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>ESN</th>
+                <th>Modelo</th>
+                <th>Data</th>
+                <th>Nome Courier</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dados serão adicionados aqui -->
+        </tbody>
+    </table>
+
+    <button id="export-btn">Exportar para Excel</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
