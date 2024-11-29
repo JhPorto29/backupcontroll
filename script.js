@@ -207,8 +207,3 @@ document.getElementById('import-btn').addEventListener('click', function() {
         }
     });
 });
-
-// Carregar dados do localStorage ao carregar a página
-window.onload = function() {
-    loadDataFromLocalStorage();
-};
