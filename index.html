@@ -49,3 +49,21 @@
     <script src="script.js"></script>
 </body>
 </html>
+<form id="data-form">
+    <label for="serial">ESN:</label>
+    <div id="serial-container">
+        <input type="text" id="serial" name="serial[]" required>
+    </div>
+    <button type="button" onclick="addSerialField()">Adicionar outro ESN</button>
+    <label for="model">Modelo:</label>
+    <input type="text" id="model" name="model" required>
+    <label for="date">Data (dd/mm/aaaa):</label>
+    <input type="date" id="date" name="date" required>
+    <label for="currie">Nome Courier:</label>
+    <input type="text" id="currie" name="currie" required>
+    <div class="buttons">
+        <button type="submit">Adicionar</button>
+        <input type="file" id="import-file" style="display:none;">
+        <button type="button" id="import-btn">Importar Excel</button>
+    </div>
+</form>
