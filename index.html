@@ -5,29 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Backups</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
     <h1>Controle de Backups</h1>
+ 
+    <!-- Contêiner de notificações -->
+    <div id="notification-container" class="hidden"></div>
+ 
+    <!-- Formulário para adicionar dados -->
     <form id="data-form">
-        <label for="serial">ESN:</label>
-        <input type="text" id="serial" name="serial" required onblur="checkDuplicateSerial()">
-        <div id="duplicate-warning" style="display: none; color: red;">ESN já registrado! Deseja removê-lo? <button onclick="removeSerialPrompt()">Sim</button></div>
         <label for="model">Modelo:</label>
-        <input type="text" id="model" name="model" required>
-        <label for="date">Data (dd/mm/aaaa):</label>
-        <input type="date" id="date" name="date" required>
+        <input type="text" id="model" name="model" placeholder="Digite o modelo" required>
+ 
+        <label for="serial">ESN:</label>
+        <input type="text" id="serial" name="serial" placeholder="Digite o ESN" required>
+ 
+        <label for="date">Data:</label>
+        <input type="date" id="date" name="date">
+ 
         <label for="currie">Nome Courier:</label>
-        <input type="text" id="currie" name="currie" required>
-        <div class="buttons">
-            <button type="submit">Adicionar</button>
-            <input type="file" id="import-file" style="display:none;">
-            <button type="button" id="import-btn">Importar Excel</button>
-        </div>
+        <input type="text" id="currie" name="currie" placeholder="Digite o nome do courier" required>
+ 
+        <button type="submit" id="add-serial-btn">Adicionar</button>
     </form>
-
+ 
     <h2>Dados Registrados</h2>
-    <input type="text" id="search-box" placeholder="Procurar ESN" onkeyup="searchSerial()">
+ 
+    <!-- Seção de pesquisa -->
+    <div class="search-container">
+        <select id="search-column">
+            <option value="1">ESN</option>
+            <option value="2">Modelo</option>
+            <option value="3">Data</option>
+            <option value="4">Nome Courier</option>
+        </select>
+        <input type="text" id="search-box" placeholder="Digite para pesquisar..." onkeyup="searchTable()">
+    </div>
+ 
+    <!-- Tabela de dados -->
     <table id="data-table">
         <thead>
             <tr>
@@ -36,33 +52,27 @@
                 <th>Modelo</th>
                 <th>Data</th>
                 <th>Nome Courier</th>
+                <th>Tempo no Sistema</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Dados serão adicionados aqui -->
+            <!-- Dados serão adicionados aqui dinamicamente -->
         </tbody>
     </table>
-
-    <button id="export-btn">Exportar para Excel</button>
-
+ 
+    <!-- Botões de Importar e Exportar -->
+    <div class="action-buttons">
+        <input type="file" id="import-file" style="display: none;">
+        <button type="button" id="import-btn">Importar Excel</button>
+        <button type="button" id="export-btn">Exportar para Excel</button>
+    </div>
+ 
+    <!-- Script principal -->
     <script src="script.js"></script>
 </body>
 </html>
-<form id="data-form">
-    <label for="serial">ESN:</label>
-    <div id="serial-container">
-        <input type="text" id="serial" name="serial[]" required>
-    </div>
-    <button type="button" onclick="addSerialField()">Adicionar outro ESN</button>
-    <label for="model">Modelo:</label>
-    <input type="text" id="model" name="model" required>
-    <label for="date">Data (dd/mm/aaaa):</label>
-    <input type="date" id="date" name="date" required>
-    <label for="currie">Nome Courier:</label>
-    <input type="text" id="currie" name="currie" required>
-    <div class="buttons">
-        <button type="submit">Adicionar</button>
+ 
         <input type="file" id="import-file" style="display:none;">
         <button type="button" id="import-btn">Importar Excel</button>
     </div>
