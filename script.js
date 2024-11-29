@@ -3,7 +3,7 @@ document.getElementById('data-form').addEventListener('submit', function(event) 
 
     var serial = document.getElementById('serial').value;
     var model = document.getElementById('model').value;
-    var date = document.getElementById('date').value;
+    var date = new Date().toISOString().split('T')[0]; // Data atual no formato YYYY-MM-DD
     var currie = document.getElementById('currie').value;
 
     if (isDuplicateSerial(serial)) {
@@ -93,7 +93,7 @@ function removeSerial(serial) {
     }
 }
 
-function searchSerial() {
+function searchTable() {
     var input = document.getElementById('search-box').value.toLowerCase();
     var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
     var rows = table.getElementsByTagName('tr');
@@ -135,34 +135,4 @@ document.getElementById('import-btn').addEventListener('click', function() {
                 var content = e.target.result;
                 var workbook = XLSX.read(content, {type: 'binary'});
                 var sheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[sheetName];
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-
-                var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-                table.innerHTML = ''; // Limpar a tabela antes de adicionar novos dados
-
-                jsonData.forEach(function(row, index) {
-                    if (index !== 0) { // Skip header row
-                        var formattedDate = isNaN(row[2]) ? formatDateToBrazilian(row[2]) : formatDateFromExcel(row[2]);
-                        var newRow = table.insertRow();
-                        newRow.innerHTML = `
-                            <td>${table.rows.length + 1}</td>
-                            <td>${row[0] || ''}</td>
-                            <td>${row[1] || ''}</td>
-                            <td>${formattedDate}</td>
-                            <td>${row[3] || ''}</td>
-                            <td><button onclick="removeRow(this)">Remover</button></td>
-                        `;
-                    }
-                });
-            };
-            reader.onerror = function(ex) {
-                console.log(ex);
-                alert('Erro ao ler o arquivo');
-            };
-            reader.readAsBinaryString(file);
-        } else {
-            alert('Por favor, selecione um arquivo para importar.');
-        }
-    });
-});
+                var worksheet = workbook.Sheets[s
