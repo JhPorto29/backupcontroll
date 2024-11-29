@@ -1,3 +1,9 @@
+Vamos adicionar as características de design ao site para que ele tenha uma aparência mais profissional e empresarial. Vou fornecer um exemplo completo, incluindo o HTML, CSS e JavaScript, para garantir que tudo esteja bem estilizado e funcional.
+
+### Atualização do CSS (styles.css)
+Vamos garantir que o CSS forneça um visual mais refinado e empresarial.
+
+```css
 /* Estilo global */
 body {
     font-family: 'Roboto', Arial, sans-serif;
@@ -289,9 +295,4 @@ td {
     font-size: 1.2em;
     padding: 10px 20px;
     background-color: #e67e22;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease
-
+    color
