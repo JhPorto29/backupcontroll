@@ -95,45 +95,6 @@ function removeSerial(serial) {
             break;
         }
     }
-}
 
-function searchTable() {
-    var input = document.getElementById('search-box').value.toLowerCase();
-    var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-    var rows = table.getElementsByTagName('tr');
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-        if (cells[1].textContent.toLowerCase().indexOf(input) > -1) {
-            rows[i].style.display = "";
-        } else {
-            rows[i].style.display = "none";
-        }
-    }
-}
 
-document.getElementById('export-btn').addEventListener('click', function() {
-    var table = document.getElementById('data-table');
-    var rows = Array.from(table.rows);
-
-    var data = rows.map(function(row) {
-        return Array.from(row.cells).map(function(cell) {
-            return cell.textContent;
-        });
-    });
-
-    var worksheet = XLSX.utils.aoa_to_sheet(data);
-    var workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Dados");
-
-    XLSX.writeFile(workbook, "dados_registrados.xlsx");
-});
-
-document.getElementById('import-btn').addEventListener('click', function() {
-    var fileInput = document.getElementById('import-file');
-    fileInput.click();
-    fileInput.addEventListener('change', function() {
-        var file = fileInput.files[0];
-        if (file) {
-            var reader = new FileReader();
-           
 
