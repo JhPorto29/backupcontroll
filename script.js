@@ -15,7 +15,6 @@ document.getElementById('data-form').addEventListener('submit', function(event) 
     document.getElementById('serial').style.borderColor = ""; // Resetar cor da borda
 
     addNewEntry(serial, model, date, currie);
-    saveDataToLocalStorage();
     document.getElementById('data-form').reset();
     document.getElementById('duplicate-warning').style.display = 'none'; // Esconder aviso de duplicação após adicionar
 });
@@ -44,7 +43,6 @@ function checkDuplicateSerial() {
 function removeSerialPrompt() {
     var serial = document.getElementById('serial').value;
     removeSerial(serial);
-    saveDataToLocalStorage();
     document.getElementById('duplicate-warning').style.display = 'none';
     document.getElementById('serial').style.borderColor = ""; // Resetar cor da borda após remoção
 }
@@ -81,7 +79,6 @@ function addNewEntry(serial, model, date, currie) {
 function removeRow(button) {
     var row = button.parentElement.parentElement;
     row.parentElement.removeChild(row);
-    saveDataToLocalStorage();
 }
 
 function removeSerial(serial) {
@@ -93,43 +90,6 @@ function removeSerial(serial) {
             table.deleteRow(i);
             break;
         }
-    }
-    saveDataToLocalStorage();
-}
-
-function saveDataToLocalStorage() {
-    var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-    var rows = table.getElementsByTagName('tr');
-    var data = [];
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-        var rowData = {
-            index: cells[0].textContent,
-            serial: cells[1].textContent,
-            model: cells[2].textContent,
-            date: cells[3].textContent,
-            currie: cells[4].textContent
-        };
-        data.push(rowData);
-    }
-    localStorage.setItem('backupData', JSON.stringify(data));
-}
-
-function loadDataFromLocalStorage() {
-    var data = JSON.parse(localStorage.getItem('backupData'));
-    if (data) {
-        var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-        data.forEach(function(rowData) {
-            var newRow = table.insertRow();
-            newRow.innerHTML = `
-                <td>${rowData.index}</td>
-                <td>${rowData.serial}</td>
-                <td>${rowData.model}</td>
-                <td>${rowData.date}</td>
-                <td>${rowData.currie}</td>
-                <td><button onclick="removeRow(this)">Remover</button></td>
-            `;
-        });
     }
 }
 
@@ -195,7 +155,6 @@ document.getElementById('import-btn').addEventListener('click', function() {
                         `;
                     }
                 });
-                saveDataToLocalStorage();
             };
             reader.onerror = function(ex) {
                 console.log(ex);
@@ -203,11 +162,6 @@ document.getElementById('import-btn').addEventListener('click', function() {
             };
             reader.readAsBinaryString(file);
         } else {
-            alert('Por favor, selecione um arquivo para importar.');
-        }
-    });
-});
-
             alert('Por favor, selecione um arquivo para importar.');
         }
     });
