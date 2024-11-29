@@ -15,6 +15,11 @@
         <button onclick="goHome()">Home</button>
     </div>
 
+    <!-- Botão para página de transporte -->
+    <div class="transport-button">
+        <button onclick="goToTransport()">Gerar Documento de Transporte</button>
+    </div>
+
     <!-- Contêiner de notificações -->
     <div id="notification-container" class="hidden"></div>
 
@@ -56,6 +61,7 @@
             <option value="2">Modelo</option>
             <option value="3">Data</option>
             <option value="4">Nome Courier</option>
+            <option value="5">Tempo no Sistema</option>
         </select>
         <input type="text" id="search-box" placeholder="Digite para pesquisar..." onkeyup="searchTable()">
     </div>
@@ -96,9 +102,16 @@
         function goHome() {
             window.location.href = 'index.html';
         }
+
+        function goToTransport() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const client = urlParams.get('client');
+            window.location.href = `transporte.html?client=${client}`;
+        }
     </script>
 </body>
 </html>
+
     </script>
 </body>
 </html>
