@@ -86,16 +86,7 @@ function removeRow(button) {
 }
 
 function removeSerial(serial) {
-    var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-    var rows = table.getElementsByTagName('tr');
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-        if (cells[1].textContent === serial) {
-            table.deleteRow(i);
-            break;
-        }
-    }
-}
+    var table = document.getElementById('data-table').get
 
 function searchTable() {
     var input =
