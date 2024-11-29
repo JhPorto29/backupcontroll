@@ -6,6 +6,8 @@ document.getElementById('data-form').addEventListener('submit', function(event) 
     var date = new Date().toISOString().split('T')[0]; // Data atual no formato YYYY-MM-DD
     var currie = document.getElementById('currie').value;
 
+    console.log("Form submitted with values:", { serial, model, date, currie });
+
     if (isDuplicateSerial(serial)) {
         alert("ESN já registrado!");
         document.getElementById('serial').style.borderColor = "red";
@@ -74,6 +76,8 @@ function addNewEntry(serial, model, date, currie) {
         <td>${currie}</td>
         <td><button onclick="removeRow(this)">Remover</button></td>
     `;
+
+    console.log("New entry added:", { serial, model, formattedDate, currie });
 }
 
 function removeRow(button) {
@@ -127,4 +131,9 @@ document.getElementById('export-btn').addEventListener('click', function() {
 document.getElementById('import-btn').addEventListener('click', function() {
     var fileInput = document.getElementById('import-file');
     fileInput.click();
-    fileInput
+    fileInput.addEventListener('change', function() {
+        var file = fileInput.files[0];
+        if (file) {
+            var reader = new FileReader();
+           
+
