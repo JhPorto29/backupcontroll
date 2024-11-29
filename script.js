@@ -207,3 +207,8 @@ document.getElementById('import-btn').addEventListener('click', function() {
         }
     });
 });
+
+            alert('Por favor, selecione um arquivo para importar.');
+        }
+    });
+});
