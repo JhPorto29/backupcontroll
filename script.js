@@ -95,6 +95,9 @@ function removeSerial(serial) {
             break;
         }
     }
+}
 
+function searchTable() {
+    var input =
 
 
