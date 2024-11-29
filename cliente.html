@@ -10,6 +10,11 @@
 <body>
     <h1 id="client-name">Controle de Backups</h1>
 
+    <!-- Botão Home -->
+    <div class="home-button">
+        <button onclick="goHome()">Home</button>
+    </div>
+
     <!-- Contêiner de notificações -->
     <div id="notification-container" class="hidden"></div>
 
@@ -87,6 +92,13 @@
             const client = urlParams.get('client');
             document.getElementById('client-name').textContent = `Controle de Backups - ${client}`;
         });
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
     </script>
 </body>
 </html>
