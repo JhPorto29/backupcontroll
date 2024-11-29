@@ -1,7 +1,8 @@
 /* Estilo global */
 body {
     font-family: 'Roboto', Arial, sans-serif;
-    margin: 20px;
+    margin: 0;
+    padding: 0;
     background-color: #f0f2f5;
     color: #333;
 }
@@ -233,4 +234,64 @@ td {
     }
 }
 
- 
+/* Estilo para a página de seleção de cliente */
+.client-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.client-selection button {
+    font-size: 1.5em;
+    padding: 20px 40px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+/* Estilo para o botão Home */
+.home-button {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.home-button button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.home-button button:hover {
+    background-color: #2980b9;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.home-button button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para o botão de transporte */
+.transport-button {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.transport-button button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #e67e22;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease
+
