@@ -8,6 +8,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
+    <header class="banner">
+        <div class="banner-content">
+            <img src="fedex-logo.png" alt="FedEx Logo" class="banner-logo">
+        </div>
+    </header>
     <h1 id="client-name">Documento de Transporte</h1>
 
     <!-- Botão Home -->
@@ -82,36 +87,5 @@
 
         function removeKit(button) {
             var row = button.parentElement.parentElement;
-            row.parentElement.removeChild(row);
-        }
-
-        document.getElementById('generate-doc-btn').addEventListener('click', function() {
-            var { jsPDF } = window.jspdf;
-            var doc = new jsPDF();
-
-            var client = new URLSearchParams(window.location.search).get('client');
-            var table = document.getElementById('kit-table').getElementsByTagName('tbody')[0];
-            var rows = table.getElementsByTagName('tr');
-
-            doc.setFontSize(12);
-            doc.text(`Cliente: ${client}`, 10, 10);
-            doc.text('Logistics Coordinator | FedEx Express LAC - Brazil Operations', 10, 20);
-            doc.text('Travessa Limoeiro, 19, Limoeiro, Feira de Santana - BA 44.135-000', 10, 30);
-            doc.text('fedex.com/br', 10, 40);
-
-            var startY = 50;
-            for (var i = 0; i < rows.length; i++) {
-                var cells = rows[i].getElementsByTagName('td');
-                var currie = cells[0].textContent;
-                var serial = cells[1].textContent;
-                doc.text(`Courier: ${currie} | ESN: ${serial}`, 10, startY);
-                startY += 10;
-            }
-
-            doc.save('documento_transporte.pdf');
-        });
-    </script>
-</body>
-</html>
-
+            row
 
