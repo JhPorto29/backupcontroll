@@ -8,7 +8,7 @@
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
-    <h1>Controle de Backups</h1>
+    <h1 id="client-name">Controle de Backups</h1>
 
     <!-- Contêiner de notificações -->
     <div id="notification-container" class="hidden"></div>
@@ -81,6 +81,13 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const client = urlParams.get('client');
+            document.getElementById('client-name').textContent = `Controle de Backups - ${client}`;
+        });
+    </script>
 </body>
 </html>
 
