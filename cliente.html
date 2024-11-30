@@ -116,9 +116,30 @@
             var date = new Date().toISOString().split('T')[0]; // Data atual no formato YYYY-MM-DD
             var currie = document.getElementById('currie').value.toUpperCase();
 
+            if (isDuplicateSerial(serial)) {
+                alert("ESN já registrado!");
+                document.getElementById('serial').style.borderColor = "red";
+                return;
+            }
+
+            document.getElementById('serial').style.borderColor = ""; // Resetar cor da borda
+
             addNewEntry(serial, model, date, currie);
             document.getElementById('data-form').reset();
+            sortTableByColumn(4); // Ordenar pela coluna dos nomes (Nome Courier)
         });
+
+        function isDuplicateSerial(serial) {
+            var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+            var rows = table.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                if (cells[1].textContent === serial) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         function addNewEntry(serial, model, date, currie) {
             var formattedDate = formatDateToBrazilian(date);
