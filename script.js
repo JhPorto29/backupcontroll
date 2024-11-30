@@ -134,7 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('import-file').addEventListener('change', function(event) {
         var file = event.target.files[0];
         var reader = new FileReader();
-        reader.onload = function(e) {
+        
+         reader.onload = function(e) {
             var data = new Uint8Array(e.target.result);
             var workbook = XLSX.read(data, { type: 'array' });
             var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -156,26 +157,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 addNewEntry(serial, model, dateExcelFormat, currie);
             });
-        };
-        reader.readAsArrayBuffer(file);
-    });
+         };
+         reader.readAsArrayBuffer(file);
+     });
 
-    document.getElementById('export-btn').addEventListener('click', function() {
-        var table = document.getElementById('data-table');
-        var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
-        XLSX.writeFile(wb, 'dados.xlsx');
-    });
+     document.getElementById('export-btn').addEventListener('click', function() {
+         var table = document.getElementById('data-table');
+         var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+         XLSX.writeFile(wb, 'dados.xlsx');
+     });
 
-    function formatDateFromExcel(excelDate) {
-        var date = new Date(Math.round((excelDate - 25569) * 86400 * 1000)); // Corrige a data do Excel
-        var day = ("0" + date.getDate()).slice(-2);
-        var month = ("0" + (date.getMonth() + 1)).slice(-2);
-        var year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
-
-    function formatDateString(dateString) {
-        var parts = dateString.split('/');
-        return `${parts[2]}-${parts[1]}-${parts[0]}`;
-    }
-});
+     function formatDateFromExcel(excelDate) {
+         // Corrigir a data do Excel para o formato correto
+         if
