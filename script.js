@@ -41,16 +41,20 @@ document.addEventListener('DOMContentLoaded', function() {
         var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
         var newRow = table.insertRow();
 
+        var daysInSystem = calculateDaysInSystem(date);
+        var daysColor = getDaysColor(daysInSystem);
+
         newRow.innerHTML = `
             <td>${table.rows.length + 1}</td>
             <td>${serial}</td>
             <td>${model}</td>
             <td>${formattedDate}</td>
             <td>${currie}</td>
+            <td style="color: ${daysColor};">${daysInSystem} dias</td>
             <td><button onclick="removeRow(this)">Remover</button></td>
         `;
 
-        console.log("New entry added:", { serial, model, formattedDate, currie });
+        console.log("New entry added:", { serial, model, formattedDate, currie, daysInSystem });
         sortTableByColumn(4); // Ordenar após adição
     }
 
@@ -76,6 +80,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!date || typeof date !== 'string') return date;
         var parts = date.split('-');
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function calculateDaysInSystem(date) {
+        var currentDate = new Date();
+        var entryDate = new Date(date);
+        var timeDiff = Math.abs(currentDate - entryDate);
+        var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        return diffDays;
+    }
+
+    function getDaysColor(days) {
+        if (days <= 30) {
+            return 'green';
+        } else if (days <= 60) {
+            return 'orange';
+        } else {
+            return 'red';
+        }
     }
 
     function filterCouriers() {
