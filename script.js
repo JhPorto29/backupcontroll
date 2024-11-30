@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM fully loaded and parsed");
-
     document.getElementById('data-form').addEventListener('submit', function(event) {
         event.preventDefault();
         console.log("Form submitted");
@@ -164,11 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
         var date = new Date(Math.round((excelDate - 25569) * 86400 * 1000)); // Corrige a data do Excel
         var day = ("0" + date.getDate()).slice(-2);
         var month = ("0" + (date.getMonth() + 1)).slice(-2);
-        var year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
-});
-
         var year = date.getFullYear();
         return `${day}/${month}/${year}`;
     }
