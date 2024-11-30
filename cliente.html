@@ -89,6 +89,7 @@
         <input type="file" id="import-file" style="display:none;">
         <button type="button" id="import-btn">Importar Excel</button>
         <button id="export-btn">Exportar para Excel</button>
+        <button id="generate-doc-btn">Gerar Documento</button>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -106,6 +107,101 @@
             const client = urlParams.get('client');
             window.location.href = `transporte.html?client=${client}`;
         }
-    </script>
-</body>
-</html>
+
+        document.getElementById('data-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var serial = document.getElementById('serial').value.toUpperCase();
+            var model = document.getElementById('model').value.toUpperCase();
+            var date = new Date().toISOString().split('T')[0]; // Data atual no formato YYYY-MM-DD
+            var currie = document.getElementById('currie').value.toUpperCase();
+
+            addNewEntry(serial, model, date, currie);
+            document.getElementById('data-form').reset();
+        });
+
+        function addNewEntry(serial, model, date, currie) {
+            var formattedDate = formatDateToBrazilian(date);
+            var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow();
+
+            var daysInSystem = calculateDaysInSystem(date);
+            var daysColor = getDaysColor(daysInSystem);
+
+            newRow.innerHTML = `
+                <td>${table.rows.length + 1}</td>
+                <td>${serial}</td>
+                <td>${model}</td>
+                <td>${formattedDate}</td>
+                <td>${currie}</td>
+                <td style="color: ${daysColor};">${daysInSystem} dias</td>
+                <td><button onclick="removeRow(this)">Remover</button></td>
+            `;
+        }
+
+        function removeRow(button) {
+            var row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+
+        function sortTableByColumn(columnIndex) {
+            var table = document.getElementById('data-table');
+            var rows = Array.from(table.rows).slice(1); // Ignorar a linha do cabeçalho
+            rows.sort(function(a, b) {
+                var cellA = a.cells[columnIndex].textContent.trim();
+                var cellB = b.cells[columnIndex].textContent.trim();
+                return cellA.localeCompare(cellB);
+            });
+            rows.forEach(function(row) {
+                table.tBodies[0].appendChild(row);
+            });
+        }
+
+        function formatDateToBrazilian(date) {
+            if (!date || typeof date !== 'string') return date;
+            var parts = date.split('-');
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function calculateDaysInSystem(date) {
+            var currentDate = new Date();
+            var entryDate = new Date(date);
+            var timeDiff = Math.abs(currentDate - entryDate);
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            return diffDays;
+        }
+
+        function getDaysColor(days) {
+            if (days <= 30) {
+                return 'green';
+            } else if (days <= 60) {
+                return 'orange';
+            } else {
+                return 'red';
+            }
+        }
+
+        function filterCouriers() {
+            var input = document.getElementById('new-courier').value.toUpperCase();
+            var list = document.getElementById('courier-list');
+            var items = list.getElementsByTagName('li');
+
+            for (var i = 0; i < items.length; i++) {
+                var txtValue = items[i].textContent || items[i].innerText;
+                if (txtValue.toUpperCase().indexOf(input) > -1) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+
+        function addNewCourier() {
+            var newCourier = document.getElementById('new-courier').value;
+            if (newCourier) {
+                var select = document.getElementById('currie');
+                var option = document.createElement('option');
+                option.text = newCourier;
+                option.value = newCourier;
+                select.add(option);
+                document.getElementById('new-courier').value = ''; // Limpar o campo de
