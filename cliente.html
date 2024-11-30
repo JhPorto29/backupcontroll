@@ -204,4 +204,65 @@
                 option.text = newCourier;
                 option.value = newCourier;
                 select.add(option);
-                document.getElementById('new-courier').value = ''; // Limpar o campo de
+                document.getElementById('new-courier').value = ''; // Limpar o campo de entrada
+            }
+        }
+
+        document.getElementById('import-btn').addEventListener('click', function() {
+            document.getElementById('import-file').click();
+        });
+
+        document.getElementById('import-file').addEventListener('change', function(event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, { type: 'array' });
+                var firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                var jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+                jsonData.forEach(function(row, index) {
+                    if (index === 0) return; // Ignorar cabeçalho
+                    var serial = row[0];
+                    var model = row[1];
+                    var dateExcelFormat = row[2];
+                    var currie = row[3];
+
+                    // Corrigir a data do Excel para o formato correto
+                    if (typeof dateExcelFormat === 'number') {
+                        dateExcelFormat = formatDateFromExcel(dateExcelFormat);
+                    } else if (typeof dateExcelFormat === 'string') {
+                        dateExcelFormat = formatDateString(dateExcelFormat);
+                    }
+
+                    addNewEntry(serial, model, dateExcelFormat, currie);
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        document.getElementById('export-btn').addEventListener('click', function() {
+            var table = document.getElementById('data-table');
+            var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+            XLSX.writeFile(wb, 'dados.xlsx');
+        });
+
+        function formatDateFromExcel(excelDate) {
+            // Corrigir a data do Excel para o formato correto
+            if (typeof excelDate === 'number') {
+                const dateOffset = Math.floor(excelDate - 25569);
+                const newDate = new Date(dateOffset * 86400 * 1000);
+                return newDate.toISOString().split('T')[0];
+            }
+            return excelDate;
+        }
+
+        function formatDateString(dateString) {
+            // Formatar a string de data para o formato correto
+            const parts = dateString.split('/');
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+    </script>
+</body>
+</html>
