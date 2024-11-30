@@ -31,6 +31,9 @@
 
     <!-- Formulário para adicionar dados -->
     <form id="data-form">
+        <label for="serial">ESN:</label>
+        <input type="text" id="serial" name="serial" required>
+
         <label for="model">Modelo:</label>
         <input type="text" id="model" name="model" required>
 
@@ -49,9 +52,6 @@
 
             <button type="button" class="btn btn-secondary" onclick="addNewCourier()">Adicionar Courier</button>
         </div>
-
-        <label for="serial">ESN:</label>
-        <input type="text" id="serial" name="serial" required>
 
         <div class="buttons">
             <button type="submit" id="add-serial-btn">Adicionar ESN</button>
