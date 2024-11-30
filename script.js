@@ -81,5 +81,3 @@ function addNewEntry(serial, model, date, currie) {
     console.log("New entry added:", { serial, model, formattedDate, currie });
     sortTableByColumn(4); // Ordenar após adição
 }
-
-
