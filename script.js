@@ -144,9 +144,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (index === 0) return; // Ignorar cabeçalho
                 var serial = row[0];
                 var model = row[1];
-                var date = formatDateFromExcel(row[2]);
+                var dateExcelFormat = row[2];
                 var currie = row[3];
-                addNewEntry(serial, model, date, currie);
+
+                // Corrigir a data do Excel para o formato correto
+                if (typeof dateExcelFormat === 'number') {
+                    dateExcelFormat = formatDateFromExcel(dateExcelFormat);
+                } else if (typeof dateExcelFormat === 'string') {
+                    dateExcelFormat = formatDateString(dateExcelFormat);
+                }
+
+                addNewEntry(serial, model, dateExcelFormat, currie);
             });
         };
         reader.readAsArrayBuffer(file);
@@ -164,5 +172,10 @@ document.addEventListener('DOMContentLoaded', function() {
         var month = ("0" + (date.getMonth() + 1)).slice(-2);
         var year = date.getFullYear();
         return `${day}/${month}/${year}`;
+    }
+
+    function formatDateString(dateString) {
+        var parts = dateString.split('/');
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
     }
 });
