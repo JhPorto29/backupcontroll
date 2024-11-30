@@ -70,7 +70,10 @@
             var currie = document.getElementById('kit-currie').value.toUpperCase();
             var serial = document.getElementById('kit-serial').value.toUpperCase();
 
-            addKit(currie, serial);
+            addKit(currie, serial)
+                .then(() => console.log('Kit adicionado com sucesso'))
+                .catch(error => console.error('Erro ao adicionar kit:', error));
+
             document.getElementById('kit-form').reset();
         });
 
