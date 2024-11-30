@@ -1,12 +1,13 @@
 document.getElementById('data-form').addEventListener('submit', function(event) {
     event.preventDefault();
+    console.log("Form submitted");
 
     var serial = document.getElementById('serial').value.toUpperCase();
     var model = document.getElementById('model').value.toUpperCase();
     var date = new Date().toISOString().split('T')[0]; // Data atual no formato YYYY-MM-DD
     var currie = document.getElementById('currie').value.toUpperCase();
 
-    console.log("Form submitted with values:", { serial, model, date, currie });
+    console.log("Form values:", { serial, model, date, currie });
 
     if (isDuplicateSerial(serial)) {
         alert("ESN já registrado!");
@@ -99,6 +100,7 @@ function sortTableByColumn(columnIndex) {
         table.tBodies[0].appendChild(row);
     });
 }
+
 function filterCouriers() {
     var input = document.getElementById('new-courier').value.toUpperCase();
     var list = document.getElementById('courier-list');
