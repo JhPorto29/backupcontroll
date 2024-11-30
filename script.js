@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         addNewEntry(serial, model, date, currie);
         document.getElementById('data-form').reset();
-        document.getElementById('duplicate-warning').style.display = 'none'; // Esconder aviso de duplicação após adicionar
-        sortTableByColumn(4); // Ordenar pela coluna dos nomes (Nome Courier)
     });
 
     function isDuplicateSerial(serial) {
@@ -53,8 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <td style="color: ${daysColor};">${daysInSystem} dias</td>
             <td><button onclick="removeRow(this)">Remover</button></td>
         `;
-
-        console.log("New entry added:", { serial, model, formattedDate, currie, daysInSystem });
     }
 
     function removeRow(button) {
@@ -169,4 +165,16 @@ document.addEventListener('DOMContentLoaded', function() {
      function formatDateFromExcel(excelDate) {
          // Corrigir a data do Excel para o formato correto
          if (typeof excelDate === 'number') {
-             const dateOffset = Math
+             const dateOffset = Math.floor(excelDate - 25569);
+             const newDate = new Date(dateOffset * 86400 * 1000);
+             return newDate.toISOString().split('T')[0];
+         }
+         return excelDate;
+     }
+
+     function formatDateString(dateString) {
+         // Formatar a string de data para o formato correto
+         const parts = dateString.split('/');
+         return `${parts[2]}-${parts[1]}-${parts[0]}`;
+     }
+});
