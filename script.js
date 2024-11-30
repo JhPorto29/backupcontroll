@@ -55,7 +55,6 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
 
         console.log("New entry added:", { serial, model, formattedDate, currie, daysInSystem });
-        sortTableByColumn(4); // Ordenar após adição
     }
 
     function removeRow(button) {
@@ -169,4 +168,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
      function formatDateFromExcel(excelDate) {
          // Corrigir a data do Excel para o formato correto
-         if
+         if (typeof excelDate === 'number') {
+             const dateOffset = (
