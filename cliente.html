@@ -49,17 +49,13 @@
             <ul id="courier-list" class="courier-list">
                 <!-- Lista dinâmica de couriers será aqui -->
             </ul>
-
             <button type="button" class="btn btn-secondary" onclick="addNewCourier()">Adicionar Courier</button>
         </div>
-
         <div class="buttons">
             <button type="submit" id="add-serial-btn">Adicionar ESN</button>
         </div>
     </form>
-
     <h2>Dados Registrados</h2>
-
     <!-- Seção de pesquisa -->
     <div class="search-container">
         <select id="search-column">
@@ -71,7 +67,6 @@
         </select>
         <input type="text" id="search-box" placeholder="Digite para pesquisar..." onkeyup="searchTable()">
     </div>
-
     <!-- Tabela de dados -->
     <table id="data-table">
         <thead>
@@ -89,14 +84,12 @@
             <!-- Dados serão adicionados aqui -->
         </tbody>
     </table>
-
     <!-- Botões de Importar e Exportar (apenas uma vez) -->
     <div class="action-buttons">
         <input type="file" id="import-file" style="display:none;">
         <button type="button" id="import-btn">Importar Excel</button>
         <button id="export-btn">Exportar para Excel</button>
     </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
