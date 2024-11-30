@@ -169,4 +169,4 @@ document.addEventListener('DOMContentLoaded', function() {
      function formatDateFromExcel(excelDate) {
          // Corrigir a data do Excel para o formato correto
          if (typeof excelDate === 'number') {
-             const dateOffset = (
+             const dateOffset = Math
