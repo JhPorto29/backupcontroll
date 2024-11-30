@@ -1,121 +1,101 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Backups</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-</head>
-<body>
-    <header class="banner">
-        <div class="banner-content">
-            <!-- Logo removido -->
-        </div>
-    </header>
-    <h1 id="client-name">Controle de Backups</h1>
+document.getElementById('data-form').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-    <!-- Botão Home -->
-    <div class="home-button">
-        <button onclick="goHome()">Home</button>
-    </div>
+    var serial = document.getElementById('serial').value.toUpperCase();
+    var model = document.getElementById('model').value.toUpperCase();
+    var date = new Date().toISOString().split('T')[0]; // Data atual no formato YYYY-MM-DD
+    var currie = document.getElementById('currie').value.toUpperCase();
 
-    <!-- Botão para página de transporte -->
-    <div class="transport-button">
-        <button onclick="goToTransport()">Gerar Documento de Transporte</button>
-    </div>
+    console.log("Form submitted with values:", { serial, model, date, currie });
 
-    <!-- Botão de gerar documento -->
-    <button class="generate-doc-button" id="generate-doc-btn">Gerar Documento</button>
+    if (isDuplicateSerial(serial)) {
+        alert("ESN já registrado!");
+        document.getElementById('serial').style.borderColor = "red";
+        return;
+    }
 
-    <!-- Contêiner de notificações -->
-    <div id="notification-container" class="hidden"></div>
+    document.getElementById('serial').style.borderColor = ""; // Resetar cor da borda
 
-    <!-- Formulário para adicionar dados -->
-    <form id="data-form">
-        <label for="model">Modelo:</label>
-        <input type="text" id="model" name="model" required>
+    addNewEntry(serial, model, date, currie);
+    document.getElementById('data-form').reset();
+    document.getElementById('duplicate-warning').style.display = 'none'; // Esconder aviso de duplicação após adicionar
+    sortTableByColumn(4); // Ordenar pela coluna dos nomes (Nome Courier)
+});
 
-        <label for="currie">Nome Courier:</label>
-        <select id="currie" name="currie" required></select>
-
-        <!-- Campo para adicionar novo courier diretamente -->
-        <div class="form-group">
-            <label for="new-courier">Adicionar Novo Courier:</label>
-            <input type="text" id="new-courier" placeholder="Digite o nome do novo courier" oninput="filterCouriers()">
-            
-            <!-- Lista de nomes filtrados -->
-            <ul id="courier-list" class="courier-list">
-                <!-- Lista dinâmica de couriers será aqui -->
-            </ul>
-
-            <button type="button" class="btn btn-secondary" onclick="addNewCourier()">Adicionar Courier</button>
-        </div>
-
-        <label for="serial">ESN:</label>
-        <input type="text" id="serial" name="serial" required>
-
-        <div class="buttons">
-            <button type="submit" id="add-serial-btn">Adicionar ESN</button>
-        </div>
-    </form>
-
-    <h2>Dados Registrados</h2>
-
-    <!-- Seção de pesquisa -->
-    <div class="search-container">
-        <select id="search-column">
-            <option value="1">ESN</option>
-            <option value="2">Modelo</option>
-            <option value="3">Data</option>
-            <option value="4">Nome Courier</option>
-            <option value="5">Tempo no Sistema</option>
-        </select>
-        <input type="text" id="search-box" placeholder="Digite para pesquisar..." onkeyup="searchTable()">
-    </div>
-
-    <!-- Tabela de dados -->
-    <table id="data-table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>ESN</th>
-                <th>Modelo</th>
-                <th>Data</th>
-                <th>Nome Courier</th>
-                <th>Tempo no Sistema</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dados serão adicionados aqui -->
-        </tbody>
-    </table>
-
-    <!-- Botões de Importar e Exportar (apenas uma vez) -->
-    <div class="action-buttons">
-        <input type="file" id="import-file" style="display:none;">
-        <button type="button" id="import-btn">Importar Excel</button>
-        <button id="export-btn">Exportar para Excel</button>
-    </div>
-
-    <script src="script.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const client = urlParams.get('client');
-            document.getElementById('client-name').textContent = `Controle de Backups - ${client}`;
-        });
-
-        function goHome() {
-            window.location.href = 'index.html';
+function isDuplicateSerial(serial) {
+    var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+    var rows = table.getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName('td');
+        if (cells[1].textContent === serial) {
+            return true;
         }
+    }
+    return false;
+}
 
-        function goToTransport() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const client = urlParams.get('client');
-            window.location.href = `transporte.html?client=${client}`;
-        }
-    </script>
-</body>
-</html>
+function checkDuplicateSerial() {
+    var serial = document.getElementById('serial').value.toUpperCase();
+    if (isDuplicateSerial(serial)) {
+        document.getElementById('duplicate-warning').style.display = 'block';
+    } else {
+        document.getElementById('duplicate-warning').style.display = 'none';
+    }
+}
+
+function removeSerialPrompt() {
+    var serial = document.getElementById('serial').value.toUpperCase();
+    removeSerial(serial);
+    document.getElementById('duplicate-warning').style.display = 'none';
+    document.getElementById('serial').style.borderColor = ""; // Resetar cor da borda após remoção
+}
+
+function formatDateToBrazilian(date) {
+    if (!date || typeof date !== 'string') return date;
+    var parts = date.split('-');
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+function formatDateFromExcel(excelDate) {
+    var date = new Date(Math.round((excelDate - 25569) * 86400 * 1000)); // Corrige a data do Excel
+    var day = ("0" + date.getDate()).slice(-2);
+    var month = ("0" + (date.getMonth() + 1)).slice(-2);
+    var year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+function addNewEntry(serial, model, date, currie) {
+    var formattedDate = formatDateToBrazilian(date);
+    var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow();
+
+    newRow.innerHTML = `
+        <td>${table.rows.length + 1}</td>
+        <td>${serial}</td>
+        <td>${model}</td>
+        <td>${formattedDate}</td>
+        <td>${currie}</td>
+        <td><button onclick="removeRow(this)">Remover</button></td>
+    `;
+
+    console.log("New entry added:", { serial, model, formattedDate, currie });
+    sortTableByColumn(4); // Ordenar após adição
+}
+
+function removeRow(button) {
+    var row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+
+function sortTableByColumn(columnIndex) {
+    var table = document.getElementById('data-table');
+    var rows = Array.from(table.rows).slice(1); // Ignorar a linha do cabeçalho
+    rows.sort(function(a, b) {
+        var cellA = a.cells[columnIndex].textContent.trim();
+        var cellB = b.cells[columnIndex].textContent.trim();
+        return cellA.localeCompare(cellB);
+    });
+    rows.forEach(function(row) {
+        table.tBodies[0].appendChild(row);
+    });
+}
