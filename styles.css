@@ -16,7 +16,7 @@ body {
 
 /* Cabeçalhos */
 h1, h2 {
-    color: #4D148C; /* Roxo FedEx */
+    color: #003366; /* Azul marinho */
     text-align: center;
     margin-bottom: 20px;
     font-weight: 700;
@@ -62,8 +62,8 @@ input, select {
 }
 
 input:focus, select:focus {
-    border-color: #4D148C; /* Roxo FedEx */
-    box-shadow: 0 0 10px rgba(77, 20, 140, 0.5);
+    border-color: #003366; /* Azul marinho */
+    box-shadow: 0 0 10px rgba(0, 51, 102, 0.5);
 }
 
 /* Adicionar courier diretamente */
@@ -77,8 +77,8 @@ input:focus, select:focus {
 }
 
 #new-courier:focus {
-    border-color: #4D148C; /* Roxo FedEx */
-    box-shadow: 0 0 10px rgba(77, 20, 140, 0.5);
+    border-color: #003366; /* Azul marinho */
+    box-shadow: 0 0 10px rgba(0, 51, 102, 0.5);
 }
 
 /* Lista de couriers */
@@ -109,7 +109,7 @@ input:focus, select:focus {
 /* Botões */
 button {
     padding: 14px 28px;
-    background-color: #FF6600; /* Laranja FedEx */
+    background-color: #003366; /* Azul marinho */
     color: white;
     border: none;
     border-radius: 8px;
@@ -120,7 +120,7 @@ button {
 }
 
 button:hover {
-    background-color: #E65C00; /* Laranja mais escuro */
+    background-color: #002244; /* Azul marinho mais escuro */
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
@@ -204,7 +204,7 @@ th, td {
 }
 
 th {
-    background-color: #4D148C; /* Roxo FedEx */
+    background-color: #003366; /* Azul marinho */
     color: white;
     text-align: center;
     font-weight: bold;
@@ -248,7 +248,7 @@ td {
     padding: 20px 40px;
     margin: 10px;
     cursor: pointer;
-    background-color: #4D148C; /* Roxo FedEx */
+    background-color: #003366; /* Azul marinho */
     color: white;
     border: none;
     border-radius: 8px;
@@ -257,7 +257,7 @@ td {
 }
 
 .client-selection button:hover {
-    background-color: #3B0F6B; /* Roxo mais escuro */
+    background-color: #002244; /* Azul marinho mais escuro */
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
@@ -275,6 +275,14 @@ td {
 
 .home-button button {
     font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #003366; /* Azul marinho */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px
     padding: 10px 20px;
     background-color: #4D148C; /* Roxo FedEx */
     color: white;
