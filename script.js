@@ -99,3 +99,29 @@ function sortTableByColumn(columnIndex) {
         table.tBodies[0].appendChild(row);
     });
 }
+function filterCouriers() {
+    var input = document.getElementById('new-courier').value.toUpperCase();
+    var list = document.getElementById('courier-list');
+    var items = list.getElementsByTagName('li');
+
+    for (var i = 0; i < items.length; i++) {
+        var txtValue = items[i].textContent || items[i].innerText;
+        if (txtValue.toUpperCase().indexOf(input) > -1) {
+            items[i].style.display = "";
+        } else {
+            items[i].style.display = "none";
+        }
+    }
+}
+
+function addNewCourier() {
+    var newCourier = document.getElementById('new-courier').value;
+    if (newCourier) {
+        var select = document.getElementById('currie');
+        var option = document.createElement('option');
+        option.text = newCourier;
+        option.value = newCourier;
+        select.add(option);
+        document.getElementById('new-courier').value = ''; // Limpar o campo de entrada
+    }
+}
