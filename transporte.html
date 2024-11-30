@@ -75,14 +75,21 @@
         });
 
         function addKit(currie, serial) {
-            var table = document.getElementById('kit-table').getElementsByTagName('tbody')[0];
-            var newRow = table.insertRow();
+            return new Promise((resolve, reject) => {
+                try {
+                    var table = document.getElementById('kit-table').getElementsByTagName('tbody')[0];
+                    var newRow = table.insertRow();
 
-            newRow.innerHTML = `
-                <td>${currie}</td>
-                <td>${serial}</td>
-                <td><button onclick="removeKit(this)">Remover</button></td>
-            `;
+                    newRow.innerHTML = `
+                        <td>${currie}</td>
+                        <td>${serial}</td>
+                        <td><button onclick="removeKit(this)">Remover</button></td>
+                    `;
+                    resolve();
+                } catch (error) {
+                    reject(error);
+                }
+            });
         }
 
         function removeKit(button) {
