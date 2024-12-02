@@ -89,16 +89,21 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function isDuplicateSerial(serial) {
-        var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
-        if (!table) return null;
-        var rows = table.getElementsByTagName('tr');
-        for (var i = 0; i < rows.length; i++) {
-            var cells = rows[i].getElementsByTagName('td');
-            if (cells[1].textContent === serial) {
-                return rows[i];
-            }
-        }
+    var table = document.getElementById('data-table');
+    if (!table) {
+        console.error('data-table element not found');
         return null;
+    }
+    var tbody = table.getElementsByTagName('tbody')[0];
+    var rows = tbody.getElementsByTagName('tr');
+    for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName('td');
+        if (cells[1].textContent === serial) {
+            return rows[i];
+        }
+    }
+    return null;
+}
     }
 
     function addNewEntry(serial, model, date, currie) {
