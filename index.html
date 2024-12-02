@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Cliente</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="banner">
+        <div class="banner-content">
+            <!-- Logo removido -->
+        </div>
+    </header>
+    <h1>Selecione o Cliente</h1>
+    <div class="client-selection">
+        <button onclick="selectClient('Cielo')">Cielo</button>
+        <button onclick="selectClient('C6 Bank')">C6 Bank</button>
+        <button onclick="selectClient('PicPay')">PicPay</button>
+        <button onclick="selectClient('Fiserv')">Fiserv</button>
+        <button onclick="selectClient('Mooz')">Mooz</button>
+    </div>
+
+    <script>
+        function selectClient(client) {
+            window.location.href = `cliente.html?client=${client}`;
+        }
+    </script>
+</body>
+</html>
