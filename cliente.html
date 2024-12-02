@@ -1,1 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Backups</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script> <!-- Certifique-se de que o script.js está sendo carregado -->
+</head>
+<body>
+    <header class="banner">
+        <div class="banner-content">
+            <!-- Logo removido -->
+        </div>
+    </header>
+    <h1 id="client-name">Controle de Backups</h1>
 
+    <!-- Botão Home -->
+    <div class="home-button">
+        <button onclick="goHome()">Home</button>
+    </div>
+
+    <!-- Botão para página de transporte -->
+    <div class="transport-button">
+        <button onclick="goToTransport()">Gerar Documento de Transporte</button>
+    </div>
+
+    <!-- Contêiner de notificações -->
+    <div id="notification-container" class="hidden"></div>
+
+    <!-- Formulário para adicionar dados -->
+    <form id="data-form">
+        <label for="serial">ESN:</label>
+        <input type="text" id="serial" name="serial" required>
+
+        <label for="model">Modelo:</label>
+        <input type="text" id="model" name="model" required>
+
+        <label for="currie">Nome Courier:</label>
+        <select id="currie" name="currie" required></select>
+
+        <!-- Campo para adicionar novo courier diretamente -->
+        <div class="form-group">
+            <label for="new-courier">Adicionar Novo Courier:</label>
+            <input type="text" id="new-courier" placeholder="Digite o nome do novo courier" oninput="filterCouriers()">
+            
+            <!-- Lista de nomes filtrados -->
+            <ul id="courier-list" class="courier-list">
+                <!-- Lista dinâmica de couriers será aqui -->
+            </ul>
+            <button type="button" class="btn btn-secondary" onclick="addNewCourier()">Adicionar Courier</button>
+        </div>
+        <div class="buttons">
+            <button type="submit" id="add-serial-btn">Adicionar ESN</button>
+        </div>
+    </form>
+    <h2>Dados Registrados</h2>
+    <!-- Seção de pesquisa -->
+    <div class="search-container">
+        <select id="search-column">
+            <option value="1">ESN</option>
+            <option value="2">Modelo</option>
+            <option value="3">Data</option>
+            <option value="4">Nome Courier</option>
+            <option value="5">Tempo no Sistema</option>
+        </select>
+        <input type="text" id="search-box" placeholder="Digite para pesquisar..." onkeyup="searchTable()">
+    </div>
+    <!-- Contêiner para a tabela virtualizada -->
+    <div id="table-container" style="height: 400px; overflow-y: auto;">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ESN</th>
+                    <th>Modelo</th>
+                    <th>Data</th>
+                    <th>Nome Courier</th>
+                    <th>Tempo no Sistema</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados serão adicionados aqui -->
+            </tbody>
+        </table>
+    </div>
+    <!-- Botões de Importar e Exportar (apenas uma vez) -->
+    <div class="action-buttons">
+        <input type="file" id="import-file" style="display:none;">
+        <button type="button" id="import-btn">Importar Excel</button>
+        <button id="export-btn">Exportar para Excel</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
