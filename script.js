@@ -261,3 +261,23 @@ document.addEventListener('DOMContentLoaded', function() {
     window.searchTable = searchTable;
     window.removeRow = removeRow; // Tornar a função removeRow acessível globalmente
 });
+function addNewEntry(serial, model, date, currie) {
+    var formattedDate = formatDateToBrazilian(date);
+    var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+    if (!table) return;
+    var newRow = table.insertRow();
+
+    var daysInSystem = calculateDaysInSystem(date);
+    var daysColor = getDaysColor(daysInSystem);
+
+    newRow.innerHTML = `
+        <td>${table.rows.length + 1}</td>
+        <td>${serial}</td>
+        <td>${model}</td>
+        <td>${formattedDate}</td>
+        <td>${currie}</td>
+        <td style="color: ${daysColor};">${daysInSystem} dias</td>
+        <td><button onclick="removeRow(this)">Remover</button></td>
+    `;
+    newRow.style.display = ""; // Garantir que a nova linha esteja visível
+}
