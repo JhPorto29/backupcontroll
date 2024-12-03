@@ -75,7 +75,7 @@ function addNewEntry(serial, model, dateExcelFormat, currie) {
     }
 
     const newRow = tbody.insertRow();
-    newRow.insertCell(0).textContent = tbody.rows.length;
+    newRow.insertCell(0).textContent = tbody.rows.length + 1; // Corrigido para começar do 1
     newRow.insertCell(1).textContent = serial;
     newRow.insertCell(2).textContent = model;
     newRow.insertCell(3).textContent = dateExcelFormat;
@@ -113,6 +113,19 @@ function calculateDaysInSystem(date) {
     const diffTime = Math.abs(currentDate - entryDate);
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
+
+function deleteRow(button) {
+    const row = button.parentNode.parentNode;
+    row.parentNode.removeChild(row);
+}
+
+// Exemplo de como adicionar uma nova entrada
+document.addEventListener('DOMContentLoaded', function() {
+    const worker = new Worker('worker.js');
+    worker.onmessage = function(event) {
+        const data = event.data;
+        if (data.serial && !isDuplicateSerial(data.serial
+
 
 function deleteRow(button) {
     const row = button.parentNode.parentNode;
