@@ -1,18 +1,18 @@
 self.addEventListener('message', function(event) {
-    var data = event.data;
-    var jsonData = data.jsonData;
-    var couriers = new Set();
-    var chunkSize = 100;
-    var index = 0;
+    const data = event.data;
+    const jsonData = data.jsonData;
+    const couriers = new Set();
+    const chunkSize = 100;
+    let index = 0;
 
     function processChunk() {
-        var chunk = jsonData.slice(index, index + chunkSize);
+        const chunk = jsonData.slice(index, index + chunkSize);
 
         chunk.forEach(function(row) {
-            var serial = row[0];
-            var model = row[1];
-            var dateExcelFormat = row[2];
-            var currie = row[3];
+            const serial = row[0];
+            const model = row[1];
+            let dateExcelFormat = row[2];
+            const currie = row[3];
 
             // Verificar se a coluna ESN está preenchida
             if (!serial) {
@@ -33,7 +33,7 @@ self.addEventListener('message', function(event) {
         index += chunkSize;
 
         if (index < jsonData.length) {
-            setTimeout(processChunk, 0); // Processar o próximo bloco
+            requestAnimationFrame(processChunk); // Processar o próximo bloco
         } else {
             self.postMessage({ couriers: Array.from(couriers) });
         }
@@ -55,5 +55,8 @@ function formatDateFromExcel(excelDate) {
 function formatDateString(dateString) {
     // Formatar a string de data para o formato correto
     const parts = dateString.split('/');
-    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    if (parts.length === 3) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateString; // Retornar a string original se o formato não for esperado
 }
