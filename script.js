@@ -54,10 +54,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.couriers) {
                     data.couriers.forEach(function(courier) {
                         var select = document.getElementById('currie');
-                        var option = document.createElement('option');
-                        option.text = courier;
-                        option.value = courier;
-                        select.add(option);
+                        if (select) {
+                            var option = document.createElement('option');
+                            option.text = courier;
+                            option.value = courier;
+                            select.add(option);
+                        }
                     });
                 } else {
                     var duplicateRow = isDuplicateSerial(data.serial);
@@ -67,7 +69,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     addNewEntry(data.serial, data.model, data.dateExcelFormat, data.currie);
                 }
             };
+
+            worker.onerror = function(error) {
+                console.error("Worker error:", error);
+            };
+
+            worker.onmessageerror = function(error) {
+                console.error("Worker message error:", error);
+            };
         };
+
+        reader.onerror = function(error) {
+            console.error("FileReader error:", error);
+        };
+
         reader.readAsArrayBuffer(file);
     });
 
@@ -89,37 +104,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function isDuplicateSerial(serial) {
-    var table = document.getElementById('data-table');
-    if (!table) {
-        console.error('data-table element not found');
+        var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+        if (!table) return null;
+        var rows = table.getElementsByTagName('tr');
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName('td');
+            if (cells[1].textContent === serial) {
+                return rows[i];
+            }
+        }
         return null;
     }
-    var tbody = table.getElementsByTagName('tbody')[0];
-    var rows = tbody.getElementsByTagName('tr');
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-        if (cells[1].textContent === serial) {
-            return rows[i];
-        }
-    }
-    return null;
-}
- function isDuplicateSerial(serial) {
-    var table = document.getElementById('data-table');
-    if (!table) {
-        console.error('data-table element not found');
-        return null;
-    }
-    var tbody = table.getElementsByTagName('tbody')[0];
-    var rows = tbody.getElementsByTagName('tr');
-    for (var i = 0; i < rows.length; i++) {
-        var cells = rows[i].getElementsByTagName('td');
-        if (cells[1].textContent === serial) {
-            return rows[i];
-        }
-    }
-    return null;
-}
+
+    function addNewEntry(serial, model, date, currie) {
+        var formattedDate = formatDateToBrazilian(date);
+        var table = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+        if (!table) return;
+        var newRow = table.insertRow();
+
+        var daysInSystem = calculateDaysInSystem(date);
+        var daysColor = getDaysColor(daysInSystem);
+
         newRow.innerHTML = `
             <td>${table.rows.length + 1}</td>
             <td>${serial}</td>
@@ -254,4 +259,5 @@ document.addEventListener('DOMContentLoaded', function() {
     window.filterCouriers = filterCouriers;
     window.addNewCourier = addNewCourier;
     window.searchTable = searchTable;
+    window.removeRow = removeRow; // Tornar a função removeRow acessível globalmente
 });
