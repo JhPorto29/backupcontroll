@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const cell = row.cells[column];
             if (cell) {
                 const txtValue = cell.textContent || cell.innerText;
-row.style.display = txtValue.toUpperCase().includes(input) ? "" : "none";
+                row.style.display = txtValue.toUpperCase().includes(input) ? "" : "none";
             }
         });
     }
