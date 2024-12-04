@@ -125,7 +125,42 @@ document.addEventListener('DOMContentLoaded', function() {
     worker.onmessage = function(event) {
         const data = event.data;
         if (data.serial && !isDuplicateSerial(data.serial
+function goHome() {
+    window.location.href = "index.html";
+}
 
+function goToTransport() {
+    window.location.href = "transporte.html";
+}
+
+// Ensure these functions are properly defined and linked
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('import-btn').addEventListener('click', function() {
+        document.getElementById('import-file').click();
+    });
+
+    document.getElementById('export-btn').addEventListener('click', function() {
+        // Implement export to Excel functionality
+    });
+
+    document.getElementById('data-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Add data to the table
+    });
+});
+
+function filterCouriers() {
+    // Implement filtering logic
+}
+
+function addNewCourier() {
+    // Implement adding new courier logic
+}
+
+function searchTable() {
+    // Implement search logic
+}
 
 function deleteRow(button) {
     const row = button.parentNode.parentNode;
