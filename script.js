@@ -78,12 +78,15 @@ document.addEventListener('DOMContentLoaded', function () {
         tableBody.appendChild(row);
     }
     function formatDate(date) {
-        if (typeof date === 'string') {
-            return date.split('-').reverse().join('/');
-        } else if (date instanceof Date) {
-            return date.toLocaleDateString('pt-BR');
+        try {
+            const parsedDate = new Date(date);
+            if (isNaN(parsedDate)) {
+                throw new Error('Invalid date');
+            }
+            return parsedDate.toLocaleDateString('pt-BR');
+        } catch (error) {
+            return '!';
         }
-        return date;
     }
     function removeRow(button) {
         const row = button.closest('tr');
