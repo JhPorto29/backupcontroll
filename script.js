@@ -136,3 +136,32 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('Funcionalidade de gerar documento de transporte ainda não implementada.');
     };
 });
+window.goToTransport = function() {
+    const rows = document.querySelectorAll('#data-table tbody tr');
+    if (rows.length === 0) {
+        alert('Não há dados para gerar o documento de transporte.');
+        return;
+    }
+
+    let transportData = [];
+    rows.forEach(row => {
+        const rowData = {
+            esn: row.cells[1].textContent,
+            model: row.cells[2].textContent,
+            date: row.cells[3].textContent,
+            courier: row.cells[4].textContent,
+            daysInSystem: row.cells[5].textContent
+        };
+        transportData.push(rowData);
+    });
+
+    const transportDocument = JSON.stringify(transportData, null, 2);
+    const blob = new Blob([transportDocument], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'transport_document.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+};
