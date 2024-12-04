@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const serial = document.getElementById('serial').value.toUpperCase();
         const model = document.getElementById('model').value.toUpperCase();
-        const date = document.getElementById('date').value; // Pulling the date from the form input
+        const date = new Date().toISOString().split('T')[0];
         const currie = document.getElementById('currie').value.toUpperCase();
         const duplicateRow = isDuplicateSerial(serial);
         if (duplicateRow) {
@@ -131,4 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     window.searchTable = searchTable;
     window.removeRow = removeRow;
+    window.goToTransport = function() {
+        // Implement the functionality for generating a transport document here
+        alert('Funcionalidade de gerar documento de transporte ainda não implementada.');
+    };
 });
