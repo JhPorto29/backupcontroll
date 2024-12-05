@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Backups</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body>
+    <header class="banner">
+        <div class="banner-content">
+            <!-- Logo removido -->
+        </div>
+    </header>
+    <h1 id="client-name">Controle de Backups</h1>
+
+    <!-- Botão Home -->
+    <div class="home-button">
+        <button onclick="goHome()">Home</button>
+    </div>
+
+    <!-- Botão Transporte -->
+    <div class="transport-button">
+        <button onclick="goToTransportPage()">Transporte</button>
+    </div>
+
+    <!-- Formulário para adicionar dados -->
+    <form id="data-form">
+        <label for="serial">ESN:</label>
+        <input type="text" id="serial" name="serial" required>
+        <span id="duplicate-message" class="error-message"></span> <!-- Mensagem de erro -->
+        <button type="button" id="remove-duplicate-btn" class="remove-btn" style="display:none;" onclick="removeDuplicate()">Remover Duplicado</button>
+
+        <label for="model">Modelo:</label>
+        <input type="text" id="model" name="model" required>
+
+        <label for="currie">Nome Courier:</label>
+        <select id="currie" name="currie" required></select>
+
+        <div class="buttons">
+            <button type="submit">Adicionar ESN</button>
+        </div>
+    </form>
+
+    <h2>Dados Registrados</h2>
+    <div class="search-container">
+        <select id="search-column">
+            <option value="1">ESN</option>
+            <option value="2">Modelo</option>
+            <option value="3">Data</option>
+            <option value="4">Nome Courier</option>
+            <option value="5">Tempo no Sistema</option>
+        </select>
+        <input type="text" id="search-box" placeholder="Digite para pesquisar..." onkeyup="searchTable()">
+    </div>
+
+    <div id="table-container" style="height: 400px; overflow-y: auto;">
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ESN</th>
+                    <th>Modelo</th>
+                    <th>Data</th>
+                    <th>Nome Courier</th>
+                    <th>Tempo no Sistema</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados serão adicionados aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="action-buttons">
+        <input type="file" id="import-file" style="display:none;">
+        <button type="button" id="import-btn">Importar Excel</button>
+        <button id="export-btn">Exportar para Excel</button>
+    </div>
+
+    <script>
+        // Função para redirecionar para a página Transporte
+        function goToTransportPage() {
+            window.location.href = 'transporte.html'; // Ajuste o caminho, se necessário
+        }
+
+        // Função para verificar duplicatas e exibir mensagem
+        document.getElementById('serial').addEventListener('input', function () {
+            const serial = this.value.toUpperCase();
+            const duplicateRow = isDuplicateSerial(serial);
+            const serialField = document.getElementById('serial');
+            const duplicateMessage = document.getElementById('duplicate-message');
+            const removeDuplicateBtn = document.getElementById('remove-duplicate-btn');
+
+            if (duplicateRow) {
+                serialField.style.borderColor = "red";
+                duplicateMessage.textContent = "ESN já registrado!";
+                duplicateMessage.style.color = "red";
+                removeDuplicateBtn.style.display = "inline-block"; // Exibe o botão para remover duplicado
+            } else {
+                serialField.style.borderColor = "";
+                duplicateMessage.textContent = "";
+                removeDuplicateBtn.style.display = "none"; // Esconde o botão caso não haja duplicado
+            }
+        });
+
+        // Função para verificar duplicidade
+        function isDuplicateSerial(serial) {
+            const rows = document.querySelectorAll('#data-table tbody tr');
+            for (const row of rows) {
+                if (row.cells[1].textContent === serial) return row;
+            }
+            return null;
+        }
+
+        // Função para remover a linha duplicada
+        function removeDuplicate() {
+            const serial = document.getElementById('serial').value.toUpperCase();
+            const duplicateRow = isDuplicateSerial(serial);
+
+            if (duplicateRow) {
+                duplicateRow.remove(); // Remove a linha duplicada da tabela
+                document.getElementById('serial').style.borderColor = "";
+                document.getElementById('duplicate-message').textContent = ""; // Limpa a mensagem de erro
+                document.getElementById('remove-duplicate-btn').style.display = "none"; // Esconde o botão
+            }
+        }
+
+        // Outras funções...
+    </script>
+</body>
+</html>
