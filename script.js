@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function calculateDaysInSystem(date) {
         const currentDate = new Date();
         const entryDate = new Date(date);
-        return Math.ceil((currentDate - entryDate) / (1000 * 60 * 60 * 24));
+        return Math.floor((currentDate - entryDate) / (1000 * 60 * 60 * 24));
     }
 
     // Função para obter cor dos dias
