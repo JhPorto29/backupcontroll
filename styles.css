@@ -31,9 +31,9 @@ h1, h2 {
 form {
     background-color: white;
     padding: 30px;
-    border-radius: 30px; /* Bordas bem mais arredondadas */
+    border-radius: 20px; /* Bordas menos arredondadas */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    margin-bottom: 40px; /* Aumenta a margem inferior */
+    margin-bottom: 40px;
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -65,13 +65,14 @@ input:focus, select:focus {
 }
 
 button {
-    padding: 20px 40px; /* Aumenta o padding */
+    padding: 20px 40px;
     background-color: #003366; /* Azul marinho */
     color: white;
     border: none;
-    border-radius: 30px; /* Bordas bem mais arredondadas */
+    border-radius: 10px; /* Bordas menos arredondadas */
     cursor: pointer;
-    margin: 15px 10px; /* Aumenta o espaçamento entre botões */
+    margin: 15px auto; /* Centraliza os botões */
+    display: block; /* Centraliza os botões */
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
@@ -173,4 +174,53 @@ td {
     table {
         font-size: 0.9em;
     }
+}
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: #333333; /* Cinza para o fundo */
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme header.banner {
+    background-color: #1f1f1f;
+}
+
+body.dark-theme form {
+    background-color: #1f1f1f;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme table {
+    background-color: #1f1f1f;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme th {
+    background-color: #333;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme td {
+    background-color: #2a2a2a;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme button {
+    background-color: #3a3a3a;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme button:hover {
+    background-color: #555;
+}
+
+.theme-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
 }
