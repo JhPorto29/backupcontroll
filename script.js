@@ -1,228 +1,401 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const client = urlParams.get('client');
-    document.getElementById('client-name').textContent = `Controle de Backups - ${client || 'Cliente Padrão'}`;
-
-    // Adiciona um evento de submissão no formulário
-    document.getElementById('data-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        const serial = document.getElementById('serial').value.toUpperCase();
-        const model = document.getElementById('model').value.toUpperCase();
-        const date = new Date().toISOString().split('T')[0];
-        const currie = document.getElementById('currie').value.toUpperCase();
-
-        const duplicateRow = isDuplicateSerial(serial);
-        if (duplicateRow) {
-            if (confirm("ESN já registrado! Deseja remover o ESN existente?")) {
-                removeRow(duplicateRow);
-            } else {
-                document.getElementById('serial').style.borderColor = "red";
-                return;
-            }
-        }
-
-        document.getElementById('serial').style.borderColor = "";
-        addNewEntry(serial, model, date, currie);
-        document.getElementById('data-form').reset();
-        sortTableByColumn(4);
-        updateTimeColumn();
-    });
-
-    // Importação de planilha
-    document.getElementById('import-btn').addEventListener('click', function () {
-        document.getElementById('import-file').click();
-    });
-
-    document.getElementById('import-file').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            try {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-                jsonData.forEach((row, index) => {
-                    if (index === 0) return; // Ignora o cabeçalho
-                    const [serial, model, date, currie] = row;
-
-                    if (serial && model && date && currie) {
-                        const formattedDate = typeof date === 'number' ? excelDateToISO(date) : date;
-                        addNewEntry(serial, model, formattedDate, currie);
-                    }
-                });
-
-                updateTimeColumn();
-            } catch (error) {
-                console.error("Erro ao processar a planilha:", error);
-            }
-        };
-
-        reader.onerror = function (error) {
-            console.error("Erro ao carregar o arquivo:", error);
-        };
-
-        reader.readAsArrayBuffer(file);
-    });
-
-    // Exportação para Excel
-    document.getElementById('export-btn').addEventListener('click', function () {
-        const table = document.getElementById('data-table');
-        const wb = XLSX.utils.table_to_book(table, { sheet: "Dados" });
-        XLSX.writeFile(wb, 'dados.xlsx');
-    });
-
-    // Função para verificar duplicidade
-    function isDuplicateSerial(serial) {
-        const rows = document.querySelectorAll('#data-table tbody tr');
-        for (const row of rows) {
-            if (row.cells[1].textContent === serial) return row;
-        }
-        return null;
-    }
-
-    // Função para adicionar nova entrada
-    function addNewEntry(serial, model, date, currie) {
-        const tableBody = document.querySelector('#data-table tbody');
-        const row = document.createElement('tr');
-        const formattedDate = formatDate(date);
-
-        row.innerHTML = `
-            <td>${tableBody.children.length + 1}</td>
-            <td>${serial}</td>
-            <td>${model}</td>
-            <td>${formattedDate}</td>
-            <td>${currie}</td>
-            <td></td>
-            <td><button onclick="removeRow(this)">Remover</button></td>
-        `;
-        tableBody.appendChild(row);
-        addCourierToSelect(currie);
-    }
-
-    // Função para formatar data
-    function formatDate(date) {
-        return date.split('-').reverse().join('/');
-    }
-
-    // Função para converter datas no formato Excel para ISO
-    function excelDateToISO(excelDate) {
-        const date = new Date((excelDate - 25569) * 86400 * 1000);
-        return date.toISOString().split('T')[0];
-    }
-
-    // Função para remover linha
-    function removeRow(button) {
-        const row = button.closest('tr');
-        row.parentElement.removeChild(row);
-        updateTimeColumn();
-    }
-
-    // Função para ordenar a tabela
-    function sortTableByColumn(columnIndex) {
-        const rows = Array.from(document.querySelectorAll('#data-table tbody tr'));
-        rows.sort((a, b) => a.cells[columnIndex].textContent.localeCompare(b.cells[columnIndex].textContent));
-        const tableBody = document.querySelector('#data-table tbody');
-        rows.forEach(row => tableBody.appendChild(row));
-    }
-
-    // Função para calcular dias no sistema
-    function calculateDaysInSystem(date) {
-        const currentDate = new Date();
-        const entryDate = new Date(date);
-        return Math.floor((currentDate - entryDate) / (1000 * 60 * 60 * 24));
-    }
-
-    // Função para obter cor dos dias
-    function getDaysColor(days) {
-        if (days <= 30) return 'green';
-        else if (days <= 60) return 'orange';
-        else return 'red';
-    }
-
-    // Função para adicionar courier ao select
-    function addCourierToSelect(currie) {
-        const select = document.getElementById('currie');
-        if (!Array.from(select.options).some(option => option.value === currie)) {
-            const option = document.createElement('option');
-            option.value = currie;
-            option.text = currie;
-            select.appendChild(option);
-        }
-    }
-
-    // Função para atualizar a coluna de tempo
-    function updateTimeColumn() {
-        const rows = document.querySelectorAll('#data-table tbody tr');
-        rows.forEach(row => {
-            const dateCell = row.cells[3];
-            const timeCell = row.cells[5];
-            const entryDate = new Date(dateCell.textContent.split('/').reverse().join('-'));
-            const daysInSystem = calculateDaysInSystem(entryDate);
-            const daysColor = getDaysColor(daysInSystem);
-
-            timeCell.textContent = `${daysInSystem} dias`;
-            timeCell.style.color = daysColor;
-        });
-    }
-
-    // Função para pesquisar na tabela
-    function searchTable() {
-        const input = document.getElementById('search-box').value.toUpperCase();
-        const table = document.getElementById('data-table');
-        const rows = table.querySelectorAll('tbody tr');
-        const column = parseInt(document.getElementById('search-column').value);
-
-        rows.forEach(row => {
-            const cell = row.cells[column];
-            if (cell) {
-                const txtValue = cell.textContent || cell.innerText;
-                row.style.display = txtValue.toUpperCase().includes(input) ? "" : "none";
-            }
-        });
-    }
-
-    window.goHome = function () {
-        window.location.href = 'index.html';
-    };
-
-    window.searchTable = searchTable;
-    window.removeRow = removeRow;
-});
-// Função para redirecionar para a página Transporte
-function goToTransportPage() {
-    window.location.href = 'transporte.html'; // Altere 'transporte.html' para o caminho correto, se necessário
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
 }
-document.addEventListener('DOMContentLoaded', function () {
-    // Função para verificar duplicatas e exibir mensagem
-    document.getElementById('serial').addEventListener('input', function () {
-        const serial = this.value.toUpperCase();
-        const duplicateRow = isDuplicateSerial(serial);
-        const serialField = document.getElementById('serial');
-        const duplicateMessage = document.getElementById('duplicate-message');
-
-        if (duplicateRow) {
-            serialField.style.borderColor = "red";
-            duplicateMessage.textContent = "ESN já registrado!";
-            duplicateMessage.style.color = "red";
-        } else {
-            serialField.style.borderColor = "";
-            duplicateMessage.textContent = "";
-        }
-    });
-
-    // Função para verificar duplicidade
-    function isDuplicateSerial(serial) {
-        const rows = document.querySelectorAll('#data-table tbody tr');
-        for (const row of rows) {
-            if (row.cells[1].textContent === serial) return row;
-        }
-        return null;
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+header.banner {
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+header.banner .banner-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+/* Cabeçalhos */
+h1, h2 {
+    color: #191970; /* MidnightBlue */
+    text-align: center;
+}
+/* Formulário */
+form {
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #191970; /* MidnightBlue */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+/* Campos de entrada */
+input, select {
+    margin-bottom: 10px;
+    padding: 10px;
+    width: calc(100% - 28px);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+input:focus, select:focus {
+    border-color: #003366; /* Azul marinho */
+    box-shadow: 0 0 10px rgba(0, 51, 102, 0.5);
+}
+/* Adicionar courier diretamente */
+#new-courier {
+    margin-bottom: 10px;
+    padding: 14px;
+    width: calc(100% - 28px);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+#new-courier:focus {
+    border-color: #003366; /* Azul marinho */
+    box-shadow: 0 0 10px rgba(0, 51, 102, 0.5);
+}
+/* Lista de couriers */
+.courier-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.3s ease-in-out;
+}
+.courier-list li {
+    padding: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.courier-list li:hover {
+    background-color: #f0f0f0;
+}
+/* Botões */
+button {
+    padding: 14px 28px;
+    background-color: #003366; /* Azul marinho */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 10px 5px; /* Espaçamento entre botões */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+button:hover {
+    background-color: #002244; /* Azul marinho mais escuro */
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.home-button button,
+.transport-button button {
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 10px;
+}
+.home-button button:hover,
+.transport-button button:hover {
+    background-color: #000080; /* Navy */
+}
+/* Notificações */
+#notification-container {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+    padding: 15px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    z-index: 1000;
+    text-align: center;
+    display: none;
+    animation: slideDown 0.3s ease-in-out;
+}
+#notification-container.success {
+    border-color: #4CAF50;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+#notification-container.error {
+    border-color: #d32f2f;
+    background-color: #ffebee;
+    color: #b71c1c;
+}
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
     }
-
-    // Outras funções...
-});
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Tabela */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: left;
+}
+th {
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+td {
+    background-color: #f6f6f6;
+    text-align: center;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+/* Responsividade */
+@media (max-width: 768px) {
+    form {
+        padding: 20px;
+    }
+    input, button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    table {
+        font-size: 0.9em;
+    }
+}
+/* Estilo para a página de seleção de cliente */
+.client-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.client-selection button {
+    font-size: 1.5em;
+    padding: 20px 40px;
+    margin: 10px;
+    cursor: pointer;
+    background-color: #003366; /* Azul marinho */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.client-selection button:hover {
+    background-color: #002244; /* Azul marinho mais escuro */
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.client-selection button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+/* Estilo para o botão Home */
+.home-button {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.home-button button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.home-button button:hover {
+    background-color: #000080; /* Navy */
+}
+/* Estilo para o botão de transporte */
+.transport-button {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.transport-button button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+.transport-button button:hover {
+    background-color: #000080; /* Navy */
+}
+.search-container {
+    max-width: 600px;
+    margin: 20px auto;
+    text-align: center;
+}
+.search-container select,
+.search-container input {
+    padding: 10px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+#table-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.action-buttons {
+    text-align: center;
+    margin: 20px 0;
+}
+.action-buttons button {
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.action-buttons button:hover {
+    background-color: #000080; /* Navy */
+}
+.remove-btn {
+    background-color: #4682B4; /* SteelBlue */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.remove-btn:hover {
+    background-color: #4169E1; /* RoyalBlue */
+}
+/* Botões principais */
+button, .action-buttons button {
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+button:hover, .action-buttons button:hover {
+    background-color: #000080; /* Navy */
+}
+/* Botões de navegação */
+.navigation-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+.navigation-buttons button {
+    background-color: #191970; /* MidnightBlue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 5px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.navigation-buttons button:hover {
+    background-color: #000080; /* Navy */
+}
+/* Estilo dos inputs e selects */
+input[type="text"], input[type="date"], select {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: calc(100% - 22px);
+}
+/* Estilo dos links */
+a {
+    color: #191970; /* MidnightBlue */
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
