@@ -11,34 +11,36 @@
     <header class="banner">
         <div class="banner-content">
             <!-- Logo removido -->
+            <button id="theme-toggle" class="theme-toggle">🌙</button>
         </div>
     </header>
     <h1 id="client-name">Documento de Transporte</h1>
- 
+
     <!-- Botão Home -->
     <div class="home-button">
         <button onclick="goHome()">Home</button>
     </div>
- 
+
     <!-- Formulário para adicionar kits -->
     <form id="kit-form">
         <label for="kit-currie">Nome Courier:</label>
         <select id="kit-currie" name="kit-currie" required></select>
- 
-        <label for="new-courier">Adicionar Novo Courier:</label>
-        <input type="text" id="new-courier" placeholder="Digite o nome do novo courier">
-        <button type="button" onclick="addNewCourier()">Adicionar Courier</button>
- 
+
+        <!-- Novo campo para adicionar nome de couriers manualmente -->
+        <label for="name-input">Adicionar Nome de Courier:</label>
+        <input type="text" id="name-input" required>
+        <button type="button" onclick="addNameToSelect()">Adicionar Nome</button>
+
         <label for="kit-serial">ESN:</label>
         <input type="text" id="kit-serial" name="kit-serial" required>
- 
+
         <div class="buttons">
             <button type="submit" id="add-kit-btn">Adicionar Kit</button>
         </div>
     </form>
- 
+
     <h2>Kits para Envio</h2>
- 
+
     <!-- Tabela de kits -->
     <table id="kit-table">
         <thead>
@@ -52,18 +54,17 @@
             <!-- Kits serão adicionados aqui -->
         </tbody>
     </table>
- 
+
     <div class="action-buttons">
         <button id="generate-doc-btn">Gerar Documento</button>
     </div>
- 
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const client = urlParams.get('client');
             document.getElementById('client-name').textContent = `Documento de Transporte - ${client}`;
- 
-            // Carregar couriers do localStorage
+
             const couriers = JSON.parse(localStorage.getItem('couriers')) || [];
             const select = document.getElementById('kit-currie');
             couriers.forEach(courier => {
@@ -72,26 +73,37 @@
                 option.text = courier;
                 select.appendChild(option);
             });
+
+            const themeToggle = document.getElementById('theme-toggle');
+            const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (prefersDarkScheme) {
+                document.body.classList.toggle('dark-theme');
+                themeToggle.textContent = '☀️';
+            }
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                themeToggle.textContent = document.body.classList.contains('dark-theme') ? '☀️' : '🌙';
+            });
         });
- 
+
         function goHome() {
             window.location.href = 'index.html';
         }
- 
+
         document.getElementById('kit-form').addEventListener('submit', function(event) {
             event.preventDefault();
- 
+
             const currie = document.getElementById('kit-currie').value.toUpperCase();
             const serial = document.getElementById('kit-serial').value.toUpperCase();
- 
+
             addKit(currie, serial);
             document.getElementById('kit-form').reset();
         });
- 
+
         function addKit(currie, serial) {
             const tableBody = document.querySelector('#kit-table tbody');
             const row = document.createElement('tr');
- 
+
             row.innerHTML = `
                 <td>${currie}</td>
                 <td>${serial}</td>
@@ -99,83 +111,23 @@
             `;
             tableBody.appendChild(row);
         }
- 
+
         function removeKit(button) {
             const row = button.closest('tr');
             row.parentElement.removeChild(row);
         }
- 
-        function addNewCourier() {
-            const newCourier = document.getElementById('new-courier').value.toUpperCase();
+
+        function addNameToSelect(name) {
             const select = document.getElementById('kit-currie');
-            if (newCourier && !Array.from(select.options).some(option => option.value === newCourier)) {
-                const option = document.createElement('option');
-                option.value = newCourier;
-                option.text = newCourier;
-                select.appendChild(option);
-                document.getElementById('new-courier').value = ''; // Limpar o campo de entrada
-            }
+            const option = document.createElement('option');
+            option.value = name.toUpperCase();
+            option.text = name.toUpperCase();
+            select.add(option);
         }
- 
-        document.getElementById('generate-doc-btn').addEventListener('click', function() {
-            generateDocument();
-        });
- 
-        function generateDocument() {
-            const table = document.getElementById('kit-table');
-            const rows = table.querySelectorAll('tbody tr');
-            let content = `
-                <h1>Documento de Transporte</h1>
-                <table border="1" style="width: 100%; border-collapse: collapse;">
-                    <thead>
-                        <tr>
-                            <th>Nome Courier</th>
-                            <th>ESN</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
- 
-            rows.forEach(row => {
-                const cells = row.querySelectorAll('td');
-                content += `
-                    <tr>
-                        <td>${cells[0].textContent}</td>
-                        <td>${cells[1].textContent}</td>
-                    </tr>
-                `;
-            });
- 
-            content += `
-                    </tbody>
-                </table>
-                <br><br>
-                <div style="display: flex; justify-content: space-between;">
-                    <div>
-                        <p>Assinatura do Remetente:</p>
-                        <p>__________________________</p>
-                    </div>
-                    <div>
-                        <p>Assinatura do Transportador:</p>
-                        <p>__________________________</p>
-                    </div>
-                    <div>
-                        <p>Assinatura do Destinatário:</p>
-                        <p>__________________________</p>
-                    </div>
-                </div>
-            `;
- 
-            const newWindow = window.open('', '', 'width=800,height=600');
-            newWindow.document.write(content);
-            newWindow.document.close();
-            newWindow.print();
-        }
- 
-        // Tornar as funções acessíveis globalmente
+
+        // Tornar a função goHome acessível globalmente
         window.goHome = goHome;
         window.removeKit = removeKit;
-        window.addNewCourier = addNewCourier;
     </script>
 </body>
 </html>
