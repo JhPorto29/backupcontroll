@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const client = urlParams.get('client');
     document.getElementById('client-name').textContent = `Controle de Backups - ${client || 'Cliente Padrão'}`;
 
-    // Adiciona um evento de submissão no formulário
     document.getElementById('data-form').addEventListener('submit', function (event) {
         event.preventDefault();
         const serial = document.getElementById('serial').value.toUpperCase();
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateTimeColumn();
     });
 
-    // Importação de planilha
     document.getElementById('import-btn').addEventListener('click', function () {
         document.getElementById('import-file').click();
     });
@@ -69,14 +67,28 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsArrayBuffer(file);
     });
 
-    // Exportação para Excel
     document.getElementById('export-btn').addEventListener('click', function () {
         const table = document.getElementById('data-table');
         const wb = XLSX.utils.table_to_book(table, { sheet: "Dados" });
         XLSX.writeFile(wb, 'dados.xlsx');
     });
 
-    // Função para verificar duplicidade
+    document.getElementById('serial').addEventListener('input', function () {
+        const serial = this.value.toUpperCase();
+        const duplicateRow = isDuplicateSerial(serial);
+        const serialField = document.getElementById('serial');
+        const duplicateMessage = document.getElementById('duplicate-message');
+
+        if (duplicateRow) {
+            serialField.style.borderColor = "red";
+            duplicateMessage.textContent = "ESN já registrado!";
+            duplicateMessage.style.color = "red";
+        } else {
+            serialField.style.borderColor = "";
+            duplicateMessage.textContent = "";
+        }
+    });
+
     function isDuplicateSerial(serial) {
         const rows = document.querySelectorAll('#data-table tbody tr');
         for (const row of rows) {
@@ -85,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return null;
     }
 
-    // Função para adicionar nova entrada
     function addNewEntry(serial, model, date, currie) {
         const tableBody = document.querySelector('#data-table tbody');
         const row = document.createElement('tr');
@@ -104,25 +115,21 @@ document.addEventListener('DOMContentLoaded', function () {
         addCourierToSelect(currie);
     }
 
-    // Função para formatar data
     function formatDate(date) {
         return date.split('-').reverse().join('/');
     }
 
-    // Função para converter datas no formato Excel para ISO
     function excelDateToISO(excelDate) {
         const date = new Date((excelDate - 25569) * 86400 * 1000);
         return date.toISOString().split('T')[0];
     }
 
-    // Função para remover linha
     function removeRow(button) {
         const row = button.closest('tr');
         row.parentElement.removeChild(row);
         updateTimeColumn();
     }
 
-    // Função para ordenar a tabela
     function sortTableByColumn(columnIndex) {
         const rows = Array.from(document.querySelectorAll('#data-table tbody tr'));
         rows.sort((a, b) => a.cells[columnIndex].textContent.localeCompare(b.cells[columnIndex].textContent));
@@ -130,21 +137,18 @@ document.addEventListener('DOMContentLoaded', function () {
         rows.forEach(row => tableBody.appendChild(row));
     }
 
-    // Função para calcular dias no sistema
     function calculateDaysInSystem(date) {
         const currentDate = new Date();
         const entryDate = new Date(date);
         return Math.floor((currentDate - entryDate) / (1000 * 60 * 60 * 24));
     }
 
-    // Função para obter cor dos dias
     function getDaysColor(days) {
         if (days <= 30) return 'green';
         else if (days <= 60) return 'orange';
         else return 'red';
     }
 
-    // Função para adicionar courier ao select
     function addCourierToSelect(currie) {
         const select = document.getElementById('currie');
         if (!Array.from(select.options).some(option => option.value === currie)) {
@@ -155,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Função para atualizar a coluna de tempo
     function updateTimeColumn() {
         const rows = document.querySelectorAll('#data-table tbody tr');
         rows.forEach(row => {
@@ -170,7 +173,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Função para pesquisar na tabela
     function searchTable() {
         const input = document.getElementById('search-box').value.toUpperCase();
         const table = document.getElementById('data-table');
@@ -190,39 +192,6 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = 'index.html';
     };
 
-    window.searchTable = searchTable;
-    window.removeRow = removeRow;
-});
-// Função para redirecionar para a página Transporte
-function goToTransportPage() {
-    window.location.href = 'transporte.html'; // Altere 'transporte.html' para o caminho correto, se necessário
-}
-document.addEventListener('DOMContentLoaded', function () {
-    // Função para verificar duplicatas e exibir mensagem
-    document.getElementById('serial').addEventListener('input', function () {
-        const serial = this.value.toUpperCase();
-        const duplicateRow = isDuplicateSerial(serial);
-        const serialField = document.getElementById('serial');
-        const duplicateMessage = document.getElementById('duplicate-message');
-
-        if (duplicateRow) {
-            serialField.style.borderColor = "red";
-            duplicateMessage.textContent = "ESN já registrado!";
-            duplicateMessage.style.color = "red";
-        } else {
-            serialField.style.borderColor = "";
-            duplicateMessage.textContent = "";
-        }
-    });
-
-    // Função para verificar duplicidade
-    function isDuplicateSerial(serial) {
-        const rows = document.querySelectorAll('#data-table tbody tr');
-        for (const row of rows) {
-            if (row.cells[1].textContent === serial) return row;
-        }
-        return null;
-    }
-
+    window.searchTable
     // Outras funções...
 });
