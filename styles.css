@@ -463,3 +463,7 @@ body.dark-theme input:focus, body.dark-theme select:focus {
     font-size: 24px;
     cursor: pointer;
 }
+/* Dark Theme */
+body.dark-theme {
+    background-color: #333333; /* Cinza para o fundo */
+}
