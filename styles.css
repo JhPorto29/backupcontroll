@@ -841,3 +841,33 @@ button {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+.container {
+    width: 100%; /* Aumenta a largura */
+    max-width: 1600px; /* Aumenta o tamanho máximo */
+    margin: 0 auto;
+    padding: 30px; /* Aumenta o padding */
+}
+
+form {
+    background-color: white;
+    padding: 30px; /* Aumenta o padding */
+    border-radius: 30px; /* Bordas bem mais arredondadas */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px; /* Aumenta a margem inferior */
+    max-width: 800px; /* Aumenta o tamanho máximo */
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button {
+    padding: 20px 40px; /* Aumenta o padding */
+    background-color: #003366; /* Azul marinho */
+    color: white;
+    border: none;
+    border-radius: 30px; /* Bordas bem mais arredondadas */
+    cursor: pointer;
+    margin: 15px 10px; /* Aumenta o espaçamento entre botões */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
