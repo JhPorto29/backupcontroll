@@ -811,3 +811,33 @@ button {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+.container {
+    width: 95%; /* Aumenta a largura */
+    max-width: 1400px; /* Aumenta o tamanho máximo */
+    margin: 0 auto;
+    padding: 20px; /* Mantém o padding */
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px; /* Bordas mais arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    max-width: 700px; /* Aumenta o tamanho máximo */
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+button {
+    padding: 14px 28px;
+    background-color: #003366; /* Azul marinho */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Bordas mais arredondadas */
+    cursor: pointer;
+    margin: 10px 5px; /* Espaçamento entre botões */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
