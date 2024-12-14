@@ -398,3 +398,50 @@ table tbody tr:hover {
 .remove-btn:hover {
     background-color: #cc0000; /* Cor mais escura ao passar o mouse */
 }
+/* Estilo global */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-theme header.banner {
+    background-color: #1f1f1f;
+}
+
+body.dark-theme form {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+}
+
+body.dark-theme table {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+}
+
+body.dark-theme th {
+    background-color: #333;
+}
+
+body.dark-theme td {
+    background-color: #2a2a2a;
+}
+
+/* Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
