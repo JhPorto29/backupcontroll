@@ -440,6 +440,19 @@ body.dark-theme button:hover {
     background-color: #555;
 }
 
+body.dark-theme label {
+    color: #89CFF0; /* Azul claro */
+}
+
+body.dark-theme input, body.dark-theme select {
+    border-color: #89CFF0; /* Azul claro */
+}
+
+body.dark-theme input:focus, body.dark-theme select:focus {
+    border-color: #89CFF0; /* Azul claro */
+    box-shadow: 0 0 10px #89CFF0; /* Azul claro */
+}
+
 /* Toggle Button */
 .theme-toggle {
     position: absolute;
