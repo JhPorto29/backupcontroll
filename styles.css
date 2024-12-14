@@ -752,3 +752,62 @@ body.dark-theme button:hover {
 }
     cursor: pointer;
 }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px; /* Reduzir padding */
+}
+
+form {
+    background-color: white;
+    padding: 10px; /* Reduzir padding */
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Reduzir sombra */
+    margin-bottom: 20px; /* Reduzir margem */
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+header.banner {
+    background-color: #003366; /* Mudar para Azul marinho */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #003366; /* Mudar para Azul marinho */
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #003366; /* Mudar para Azul marinho */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 10px 20px; /* Reduzir padding */
+    background-color: #003366; /* Azul marinho */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 5px; /* Reduzir margem */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
