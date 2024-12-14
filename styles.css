@@ -6,27 +6,32 @@ body {
     background-color: #f0f0f0;
     color: #333;
 }
+
 .container {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
+
 header.banner {
     background-color: #191970; /* MidnightBlue */
     color: white;
     padding: 10px 0;
     text-align: center;
 }
+
 header.banner .banner-content {
     max-width: 1200px;
     margin: 0 auto;
 }
+
 /* Cabeçalhos */
 h1, h2 {
     color: #191970; /* MidnightBlue */
     text-align: center;
 }
+
 /* Formulário */
 form {
     background-color: #FFF;
@@ -39,10 +44,12 @@ form {
     margin-right: auto;
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
 form:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
+
 label {
     display: block;
     margin-bottom: 5px;
@@ -50,6 +57,7 @@ label {
     color: #191970; /* MidnightBlue */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
+
 /* Campos de entrada */
 input, select {
     margin-bottom: 10px;
@@ -61,10 +69,12 @@ input, select {
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+
 input:focus, select:focus {
     border-color: #003366; /* Azul marinho */
     box-shadow: 0 0 10px rgba(0, 51, 102, 0.5);
 }
+
 /* Adicionar courier diretamente */
 #new-courier {
     margin-bottom: 10px;
@@ -74,10 +84,12 @@ input:focus, select:focus {
     border-radius: 8px;
     box-sizing: border-box;
 }
+
 #new-courier:focus {
     border-color: #003366; /* Azul marinho */
     box-shadow: 0 0 10px rgba(0, 51, 102, 0.5);
 }
+
 /* Lista de couriers */
 .courier-list {
     list-style-type: none;
@@ -92,14 +104,17 @@ input:focus, select:focus {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     animation: fadeIn 0.3s ease-in-out;
 }
+
 .courier-list li {
     padding: 12px;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
 .courier-list li:hover {
     background-color: #f0f0f0;
 }
+
 /* Botões */
 button {
     padding: 14px 28px;
@@ -112,15 +127,18 @@ button {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+
 button:hover {
     background-color: #002244; /* Azul marinho mais escuro */
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
 button:active {
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 .home-button button,
 .transport-button button {
     background-color: #191970; /* MidnightBlue */
@@ -130,10 +148,12 @@ button:active {
     cursor: pointer;
     margin: 10px;
 }
+
 .home-button button:hover,
 .transport-button button:hover {
     background-color: #000080; /* Navy */
 }
+
 /* Notificações */
 #notification-container {
     position: fixed;
@@ -152,16 +172,19 @@ button:active {
     display: none;
     animation: slideDown 0.3s ease-in-out;
 }
+
 #notification-container.success {
     border-color: #4CAF50;
     background-color: #e8f5e9;
     color: #2e7d32;
 }
+
 #notification-container.error {
     border-color: #d32f2f;
     background-color: #ffebee;
     color: #b71c1c;
 }
+
 /* Animações */
 @keyframes fadeIn {
     from {
@@ -173,6 +196,7 @@ button:active {
         transform: translateY(0);
     }
 }
+
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -183,6 +207,7 @@ button:active {
         transform: translateY(0);
     }
 }
+
 /* Tabela */
 table {
     width: 100%;
@@ -195,11 +220,13 @@ table {
     margin-left: auto;
     margin-right: auto;
 }
+
 th, td {
     border: 1px solid #ddd;
     padding: 15px;
     text-align: left;
 }
+
 th {
     background-color: #191970; /* MidnightBlue */
     color: white;
@@ -208,30 +235,37 @@ th {
     font-family: 'Roboto', sans-serif;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 td {
     background-color: #f6f6f6;
     text-align: center;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+
 table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+
 table tbody tr:hover {
     background-color: #f1f1f1;
 }
+
 /* Responsividade */
 @media (max-width: 768px) {
     form {
         padding: 20px;
     }
+
     input, button {
         width: 100%;
         margin-bottom: 10px;
     }
+
     table {
         font-size: 0.9em;
     }
 }
+
 /* Estilo para a página de seleção de cliente */
 .client-selection {
     display: flex;
@@ -240,6 +274,7 @@ table tbody tr:hover {
     justify-content: center;
     height: 100vh;
 }
+
 .client-selection button {
     font-size: 1.5em;
     padding: 20px 40px;
@@ -252,20 +287,24 @@ table tbody tr:hover {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+
 .client-selection button:hover {
     background-color: #002244; /* Azul marinho mais escuro */
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
 .client-selection button:active {
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
 /* Estilo para o botão Home */
 .home-button {
     text-align: center;
     margin-bottom: 20px;
 }
+
 .home-button button {
     font-size: 1.2em;
     padding: 10px 20px;
@@ -277,14 +316,17 @@ table tbody tr:hover {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+
 .home-button button:hover {
     background-color: #000080; /* Navy */
 }
+
 /* Estilo para o botão de transporte */
 .transport-button {
     text-align: center;
     margin-bottom: 20px;
 }
+
 .transport-button button {
     font-size: 1.2em;
     padding: 10px 20px;
@@ -296,14 +338,17 @@ table tbody tr:hover {
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
+
 .transport-button button:hover {
     background-color: #000080; /* Navy */
 }
+
 .search-container {
     max-width: 600px;
     margin: 20px auto;
     text-align: center;
 }
+
 .search-container select,
 .search-container input {
     padding: 10px;
@@ -311,6 +356,7 @@ table tbody tr:hover {
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
 #table-container {
     max-width: 1200px;
     margin: 20px auto;
@@ -319,10 +365,12 @@ table tbody tr:hover {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 .action-buttons {
     text-align: center;
     margin: 20px 0;
 }
+
 .action-buttons button {
     background-color: #191970; /* MidnightBlue */
     color: white;
@@ -333,9 +381,11 @@ table tbody tr:hover {
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
+
 .action-buttons button:hover {
     background-color: #000080; /* Navy */
 }
+
 .remove-btn {
     background-color: #4682B4; /* SteelBlue */
     color: white;
@@ -346,56 +396,57 @@ table tbody tr:hover {
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
+
 .remove-btn:hover {
     background-color: #4169E1; /* RoyalBlue */
 }
-/* Botões principais */
-button, .action-buttons button {
-    background-color: #191970; /* MidnightBlue */
-    color: white;
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: #333333; /* Cinza para o fundo */
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme header.banner {
+    background-color: #1f1f1f;
+}
+
+body.dark-theme form {
+    background-color: #1f1f1f;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme table {
+    background-color: #1f1f1f;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme th {
+    background-color: #333;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme td {
+    background-color: #2a2a2a;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme button {
+    background-color: #3a3a3a;
+    color: #ffffff; /* Branco para o texto */
+}
+
+body.dark-theme button:hover {
+    background-color: #555;
+}
+
+/* Toggle Button */
+.theme-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
     border: none;
-    padding: 10px 20px;
+    font-size: 24px;
     cursor: pointer;
-    margin: 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-button:hover, .action-buttons button:hover {
-    background-color: #000080; /* Navy */
-}
-/* Botões de navegação */
-.navigation-buttons {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-}
-.navigation-buttons button {
-    background-color: #191970; /* MidnightBlue */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin: 5px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-.navigation-buttons button:hover {
-    background-color: #000080; /* Navy */
-}
-/* Estilo dos inputs e selects */
-input[type="text"], input[type="date"], select {
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    width: calc(100% - 22px);
-}
-/* Estilo dos links */
-a {
-    color: #191970; /* MidnightBlue */
-    text-decoration: none;
-}
-a:hover {
-    text-decoration: underline;
 }
