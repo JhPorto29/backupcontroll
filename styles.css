@@ -259,4 +259,4 @@ table tbody tr:hover {
 }
 .client-selection button:active {
     transform: translateY(0);
-    box-shadow:
+    box-shadow: 0 2px 
