@@ -1,5 +1,7 @@
 exclude:
-  - backend/
   - node_modules/
   - planilha-online/backend/
-
+  - backend/
+  - vendor/
+  - Gemfile
+  - Gemfile.lock
